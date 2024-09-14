@@ -1,15 +1,30 @@
-FROM ubuntu:latest AS build
+# Step 1: Use a Maven image to build the application
+FROM maven:3.9.3-eclipse-temurin-17 AS build
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the pom.xml and download dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy the entire project to the working directory
 COPY . .
 
-RUN ./gradlew bootJar --no-daemon
+# Package the application (skip tests if necessary)
+RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
+# Step 2: Use a lightweight JRE image to run the application
+FROM eclipse-temurin:17-jre-alpine
 
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the packaged jar from the build stage
+COPY --from=build /app/target/your-app-name.jar app.jar
+
+# Expose the application's port (change if needed)
 EXPOSE 8080
 
-COPY --from=build /build/libs/demo-1.jar app.jar
-
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
