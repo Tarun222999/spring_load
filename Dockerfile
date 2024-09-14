@@ -21,7 +21,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Copy the packaged jar from the build stage
-COPY --from=build /app/target/loadapi.jar app.jar
+COPY --from=build /app/target/target/demo-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the application's port (change if needed)
 EXPOSE 8080
