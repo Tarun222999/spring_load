@@ -1,4 +1,14 @@
-FROM eclipse-temurin:17-jdk-alpine
-VOLUME /tmp
-COPY target/demo-0.0.1-SNAPSHOT.jar load-generator.jar
-ENTRYPOINT ["java","-jar","/load-generator.jar"]
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:17-jdk-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the JAR file into the container at /app
+COPY target/demo-0.0.1-SNAPSHOT.jar /app/demo-0.0.1-SNAPSHOT.jar
+
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
+
+# Run the JAR file
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
