@@ -1,0 +1,6 @@
+com\load\demo\service\LoadService.class
+com\load\demo\LoadapiApplication.class
+com\load\demo\controller\LoadController.class
+com\load\demo\dao\LoadDao.class
+com\load\demo\model\shipment.class
+com\load\demo\model\shipmentUpdateRequest.class
